@@ -12,5 +12,5 @@
         reagent/reagent {:mvn/version "1.2.0"}
         thheller/shadow-cljs {:mvn/version "2.24.0"}}
  :aliases
- {:neil {:project {:version "0.1.1"
+ {:neil {:project {:version "0.1.2"
                    :name io.github.rads/rain}}}}
