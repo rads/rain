@@ -99,8 +99,9 @@
         handler (ring/ring-handler router)]
     (apply merge
            (for [n (set (keep (fn [[_ {:keys [name]}]] name) routes))
-                 :let [match #(apply r/match-by-name router n %&)]]
-             (->> ((:static-paths (:data (match))))
+                 :let [match #(apply r/match-by-name router n %&)
+                       static-paths (:static-paths (:data (match)))]]
+             (->> (if static-paths (static-paths) [])
                   (map (fn [d]
                          (let [m (match d)
                                req (merge ctx {:request-method :get
