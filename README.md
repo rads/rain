@@ -30,7 +30,7 @@ For a real-world example, check out the [bbin-site](https://bbin.rads.dev) and i
 Add `io.github.rads/rain` to your `deps.edn`:
 
 ```clojure
-io.github.rads/rain {:git/tag "v0.1.1" :git/sha "d3b0a39"}
+io.github.rads/rain {:git/tag "v0.1.2" :git/sha "21cf2d3"}
 ```
 
 ## Docs
