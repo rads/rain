@@ -87,10 +87,7 @@
                   (map (fn [[p c]] [(if (str/ends-with? p "/") (str p "index.html") p) c])))]
     (r/routes
       (r/router
-        (concat base
-                (map (fn [[p c]] [(str/replace p ".html" ".json")
-                                  (dissoc c :name)])
-                     base))
+        base
         {:data {:middleware [wrap-page]}}))))
 
 (defn static-pages [routes & {:as ctx}]
