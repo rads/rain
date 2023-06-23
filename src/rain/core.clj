@@ -81,10 +81,14 @@
     (r/router (remove (fn [[_ {:keys [static-props]}]] static-props) routes)
               {:data {:middleware [wrap-page]}})))
 
+(defn- has-extension? [p]
+  (boolean (re-seq #"\.[^\.]+$" p)))
+
 (defn- static-routes [routes]
   (let [base (->> (r/routes (r/router routes))
                   (filter (fn [[_ {:keys [static-props]}]] static-props))
-                  (map (fn [[p c]] [(if (str/ends-with? p "/") (str p "index.html") p) c])))]
+                  (map (fn [[p c]] [(if (str/ends-with? p "/") (str p "index") p) c]))
+                  (map (fn [[p c]] [(str p ".html") c])))]
     (r/routes
       (r/router
         base
