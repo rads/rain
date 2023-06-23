@@ -17,13 +17,9 @@
 
 ## Table of Contents
 
-- [Usage](#usage)
 - [Installation](#installation)
 - [Docs](#docs)
-
-## Usage
-
-For a real-world example, check out the [bbin-site](https://bbin.rads.dev) and its [source code](https://github.com/rads/bbin-site).
+- [Usage](#usage)
 
 ## Installation
 
@@ -36,3 +32,119 @@ io.github.rads/rain {:git/tag "v0.1.2" :git/sha "21cf2d3"}
 ## Docs
 
 - [API Docs](docs/api.md)
+
+## Usage
+
+Rain supports multiple rendering patterns. See the table below to find an example based on your needs.
+
+<table>
+  <thead>
+    <tr>
+      <td></td>
+      <td><strong>SSG</strong></td>
+      <td><strong>ISG</strong></td>
+      <td><strong>CSR</strong></td>
+      <td><strong>SSR</strong></td>
+      <td><strong>Hydration</strong></td>
+    </tr>
+  </thead>
+<tbody>
+  <tr>
+    <td><strong>Example</strong></td>
+    <td><a href="http://github.com/rads/rain.examples.ssg">rain.examples.ssg</a></td>
+    <td><a href="http://github.com/rads/bbin-site">bbin-site</a></td>
+    <td><a href="#">TODO</a></td>
+    <td><a href="#">TODO</a></td>
+    <td><a href="http://github.com/rads/rain.examples.todomvc">rain.examples.todomvc</a></td>
+  </tr>
+  <tr>
+    <td><strong>Use Cases</strong></td>
+    <td>Landing pages, blogs</td>
+    <td>Dashboards</td>
+    <td>Full-featured apps</td>
+    <td>Document-based sites</td>
+    <td>Supports both CSR and SSR use cases</td>
+  </tr>
+  <tr>
+    <td><strong>Host as a static site (JAMstack)?</strong></td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td><strong>API required?</strong></td>
+    <td>No</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td><strong>Custom server required?</strong></td>
+    <td>No</td>
+    <td>No</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td><strong>JavaScript required?</strong></td>
+    <td>No</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td><strong>Dynamic content on build?</strong></td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td><strong>Dynamic content after deploy?</strong></td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td><strong>Dynamic content based on request?</strong></td>
+    <td>No</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td><strong>User login supported?</strong></td>
+    <td>No</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td><strong>First Content Paint (FCP)?</strong></td>
+    <td>Good</td>
+    <td>Good</td>
+    <td>Bad</td>
+    <td>Good</td>
+    <td>Good</td>
+  </tr>
+  <tr>
+    <td><strong>Time-to-Interactive (TTI)?</strong></td>
+    <td>Good</td>
+    <td>Good</td>
+    <td>Bad</td>
+    <td>Good</td>
+    <td>Bad</td>
+  </tr>
+</tbody>
+</table>
+
