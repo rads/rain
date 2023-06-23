@@ -105,3 +105,10 @@
                                                :uri (:path m)})]
                            [(:path m) (:body (handler req))])))
                   (into {}))))))
+
+(defn href
+  ([router name] (href router name nil))
+  ([router name path-params]
+   (-> router
+       (r/match-by-name name path-params)
+       r/match->path)))
