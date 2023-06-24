@@ -14,20 +14,21 @@
 #?(:cljs (def ^:private transit-reader (t/reader :json)))
 
 #?(:cljs
-   (defn- get-bootstrap-data []
-     (some->> (js/document.getElementById "bootstrap-data")
-              (.-innerHTML)
-              (t/read transit-reader))))
+   (def ^:private bootstrap-data
+     (delay
+       (some->> (js/document.getElementById "bootstrap-data")
+                (.-innerHTML)
+                (t/read transit-reader)))))
 
 #?(:cljs
    (defn set-page [{:keys [db]} [_ match]]
      (let [page (-> match :data :get)
-           db' (-> (if (:page db)
-                     db
-                     (merge db (:props (get-bootstrap-data))))
-                   (merge {:page page :match match}))]
-       (cond-> {:db db'}
-               (and (:page db) (:fx match)) (assoc :fx (:fx match))))))
+           db' (merge db
+                      (when-not (:page db) (:props @bootstrap-data))
+                      {:page page :match match})
+           fx (-> match :data :fx seq)]
+       (merge {:db db'
+               :fx fx}))))
 
 #?(:cljs
    (rf/reg-event-fx ::set-page set-page))
