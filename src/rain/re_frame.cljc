@@ -1,9 +1,10 @@
 (ns rain.re-frame
   (:refer-clojure :exclude [atom])
-  #?(:cljs (:require [cognitect.transit :as t]
-                     [re-frame.core :as rf]
-                     [re-frame.db :as rf-db]
-                     [reagent.core :as r]))
+  (:require [reitit.core :as reitit]
+            #?@(:cljs [[cognitect.transit :as t]
+                       [re-frame.core :as rf]
+                       [re-frame.db :as rf-db]
+                       [reagent.core :as r]]))
   #?(:clj (:import (clojure.lang IDeref)))
   #?(:cljs (:require-macros [rain.re-frame])))
 
@@ -112,3 +113,10 @@
 #?(:clj
    (defmacro f [& body]
      `(-f (fn ~@body))))
+
+(defn href
+  ([router name] (href router name nil))
+  ([router name path-params]
+   (-> router
+       (reitit/match-by-name name path-params)
+       reitit/match->path)))
