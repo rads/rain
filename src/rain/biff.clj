@@ -25,7 +25,8 @@
       (update ctx :biff/stop conj #(shadow-server/stop!)))
     (do
       (shadow-api/release :prod)
-      (shadow-server/stop!))))
+      (shadow-server/stop!)
+      ctx)))
 
 (defn use-chime
   [{:keys [biff/features biff/plugins biff.chime/tasks] :as ctx}]
