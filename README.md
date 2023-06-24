@@ -90,7 +90,15 @@ Rain supports multiple rendering patterns. See the table below to find an exampl
     <td>Yes</td>
   </tr>
   <tr>
-    <td><strong>JavaScript required?</strong></td>
+    <td><strong>JavaScript required for viewing?</strong></td>
+    <td>No</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td><strong>JavaScript required for interaction?</strong></td>
     <td>No</td>
     <td>No</td>
     <td>Yes</td>
