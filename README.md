@@ -26,7 +26,7 @@
 Add `io.github.rads/rain` to your `deps.edn`:
 
 ```clojure
-io.github.rads/rain {:git/tag "v0.1.2" :git/sha "21cf2d3"}
+io.github.rads/rain {:git/tag "v0.1.3" :git/sha "6a976f3"}
 ```
 
 ## Docs
