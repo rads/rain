@@ -1,0 +1,4 @@
+{:paths ["src"]
+ :deps {}
+ :aliases
+ {:neil {:project {:version "0.0.1-SNAPSHOT"}}}}

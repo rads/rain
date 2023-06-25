@@ -1,4 +1,5 @@
 {:deps {io.github.rads/rain {:local/root "."}}
+ :bbin/bin {rain {:main-opts ["-m" "rain.cli"]}}
  :tasks {quickdoc {:doc "Invoke quickdoc"
                    :extra-deps {io.github.borkdude/quickdoc {:git/sha "db61b35b613d3c1a7e84ea96efab6827cca20406"}}
                    :task (exec 'quickdoc.api/quickdoc)
