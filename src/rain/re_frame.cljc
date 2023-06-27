@@ -101,18 +101,10 @@
   #?(:clj
      (fn [props]
        (binding [*app-db* (reify IDeref (deref [_] props))]
-         (page-fn props)))
+         (let [nodes (page-fn props)]
+           (if (fn? nodes) (nodes props) nodes))))
 
      :cljs page-fn))
-
-#_{:clj-kondo/ignore #?(:clj [:unused-binding] :cljs [])}
-(defn ^:no-doc -f
-  [func]
-  #?(:clj (func) :cljs func))
-
-#?(:clj
-   (defmacro f [& body]
-     `(-f (fn ~@body))))
 
 (defn href
   ([router name] (href router name nil))

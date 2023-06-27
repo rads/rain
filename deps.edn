@@ -1,7 +1,8 @@
 {:paths ["src" "resources"]
  :deps {com.cognitect/transit-clj {:mvn/version "1.0.333"}
         com.cognitect/transit-cljs {:mvn/version "0.8.280"}
-        io.github.escherize/huff {:git/sha "67afc84261d181fdd2616a01174f78f7c8732884"}
+        io.github.escherize/huff {:git/url "https://github.com/rads/huff"
+                                  :git/sha "6dca99c1367ebf07c9af10cbffa33ef128f70974"}
         jarohen/chime {:mvn/version "0.3.3"}
         info.sunng/ring-jetty9-adapter {:mvn/version "0.22.0"}
         metosin/reitit {:mvn/version "0.7.0-alpha5"}
