@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4
+
+- [Fix #15: Add `rain` CLI](https://github.com/rads/rain/issues/15)
+- [Fix #21: Support Form-2 components on server without helper function](https://github.com/rads/rain/issues/21)
+
 ## 0.1.3
 
 This version includes changes necessary to implement the [SSG](https://github.com/rads/rain/issues/1) and [hydration](https://github.com/rads/rain/issues/5) examples.
