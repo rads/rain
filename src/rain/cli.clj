@@ -1,4 +1,4 @@
-(ns rain.cli
+(ns ^:no-doc rain.cli
   (:refer-clojure :exclude [test])
   (:require [babashka.cli :as cli]
             [babashka.process :as p]
