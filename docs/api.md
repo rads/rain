@@ -393,7 +393,7 @@ Register a Re-frame DB event handler.
 
   **Server:**
 
-  Re-implementation of `re-frame.core/reg-event-db`.
+  No-op. Dispatching events is not supported on the server.
 <p><sub><a href="/blob/main/src/rain/re_frame.cljc#L114-L127">Source</a></sub></p>
 
 ## <a name="rain.re-frame/reg-event-fx">`reg-event-fx`</a><a name="rain.re-frame/reg-event-fx"></a>
@@ -411,7 +411,7 @@ Register a Re-frame effect event handler.
 
   **Server:**
 
-  Re-implementation of `re-frame.core/reg-event-fx`.
+  No-op. Dispatching events is not supported on the server.
 <p><sub><a href="/blob/main/src/rain/re_frame.cljc#L129-L142">Source</a></sub></p>
 
 ## <a name="rain.re-frame/reg-sub">`reg-sub`</a><a name="rain.re-frame/reg-sub"></a>

@@ -120,7 +120,7 @@
 
   **Server:**
 
-  Re-implementation of `re-frame.core/reg-event-db`."
+  No-op. Dispatching events is not supported on the server."
   ([id handler]
    #?(:clj nil :cljs (rf/reg-event-db id handler)))
   ([id interceptors handler]
@@ -135,7 +135,7 @@
 
   **Server:**
 
-  Re-implementation of `re-frame.core/reg-event-fx`."
+  No-op. Dispatching events is not supported on the server."
   ([id handler]
    #?(:clj nil :cljs (rf/reg-event-fx id handler)))
   ([id interceptors handler]
