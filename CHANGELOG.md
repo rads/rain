@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.5
+
+- [Fix #7: Fill in docstrings](https://github.com/rads/rain/issues/7)
+- [Fix #23: Remove `rain.re-frame/event` macro](https://github.com/rads/rain/issues/23)
+- Removed `rain.core/href`
+  - Use `rain.re-frame/href-alpha` instead
+- Removed `rain.re-frame/event`
+  - Use plain functions for event handlers instead
+- Renamed `rain.re-frame/href` to `rain.re-frame/href-alpha`
+  - Use this function temporarily until we implement `rain.re-frame/href` with an implicit `router` argument.
+
 ## 0.1.4
 
 - [Fix #15: Add `rain` CLI](https://github.com/rads/rain/issues/15)
