@@ -115,7 +115,7 @@
      :cljs (rf/reg-sub query-id f)))
 
 (defn subscribe
-  "Return a Re-frame subscription.
+  "Returns a Re-frame subscription.
 
   **Client:**
 

@@ -29,7 +29,7 @@
     -  [`reg-event-fx`](#rain.re-frame/reg-event-fx) - Register a Re-frame effect event handler.
     -  [`reg-sub`](#rain.re-frame/reg-sub) - Register a Re-frame subscription.
     -  [`set-page`](#rain.re-frame/set-page) - Dispatch the <code>[:rain.re-frame/set-page match]</code> event to change the page when a new match is detected.
-    -  [`subscribe`](#rain.re-frame/subscribe) - Return a Re-frame subscription.
+    -  [`subscribe`](#rain.re-frame/subscribe) - Returns a Re-frame subscription.
     -  [`wrap-rf`](#rain.re-frame/wrap-rf) - A Ring middleware to add support for Re-frame in server components.
 
 -----
@@ -489,7 +489,7 @@ Dispatch the `[:rain.re-frame/set-page match]` event to change the page
 (subscribe query)
 ```
 
-Return a Re-frame subscription.
+Returns a Re-frame subscription.
 
   **Client:**
 
