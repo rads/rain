@@ -1,4 +1,9 @@
 (ns rain.biff
+  "Functions for using Rain on top of Biff.
+
+  Core Biff functions are taken verbatim from the current Biff code, except the
+  XTDB dependency is removed. This enables using Biff with other databases like
+  Postgres or Datomic."
   (:require [clojure.tools.logging :as log]
             [chime.core :as chime]
             [ring.adapter.jetty9 :as jetty]

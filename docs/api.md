@@ -1,9 +1,9 @@
 # Table of contents
--  [`rain.biff`](#rain.biff) 
+-  [`rain.biff`](#rain.biff)  - Functions for using Rain on top of Biff.
     -  [`use-chime`](#rain.biff/use-chime) - A Biff component for <code>chime</code>.
     -  [`use-jetty`](#rain.biff/use-jetty) - A Biff component for <code>jetty</code>.
     -  [`use-shadow-cljs`](#rain.biff/use-shadow-cljs) - A Biff component for <code>shadow-cljs</code>.
--  [`rain.core`](#rain.core) 
+-  [`rain.core`](#rain.core)  - Functions to support rendering pages with Reitit and Hiccup.
     -  [`bootstrap-data-tag`](#rain.core/bootstrap-data-tag) - Returns a <code>&lt;script&gt;</code> tag in Hiccup format that encodes the <code>:rain/bootstrap-data</code> key from the Ring request as <code>application/transit+json</code>.
     -  [`csrf-meta-tag`](#rain.core/csrf-meta-tag) - Returns a <code>&lt;meta&gt;</code> tag for a CSRF token in Hiccup format if <code>:anti-forgery-token</code> is in the request.
     -  [`export-pages`](#rain.core/export-pages) - Export static pages to a directory.
@@ -17,7 +17,7 @@
     -  [`static-pages`](#rain.core/static-pages) - Return a map of page paths to page HTML, generated from the static routes.
     -  [`stylesheet-tags`](#rain.core/stylesheet-tags) - Returns a list of stylesheet <code>&lt;link&gt;</code> tags in Hiccup format.
     -  [`wrap-page`](#rain.core/wrap-page) - A Ring middleware that adds support for page config keys in route definitions.
--  [`rain.re-frame`](#rain.re-frame) 
+-  [`rain.re-frame`](#rain.re-frame)  - Functions to support rendering Reagent and Re-frame components on both the JVM and browser.
     -  [`*app-db*`](#rain.re-frame/*app-db*) - A dynamic var for the current Re-frame app DB.
     -  [`atom`](#rain.re-frame/atom) - Returns a Reagent atom.
     -  [`current-page`](#rain.re-frame/current-page) - A Reagent component to render the current page.
@@ -36,6 +36,11 @@
 # <a name="rain.biff">rain.biff</a>
 
 
+Functions for using Rain on top of Biff.
+
+  Core Biff functions are taken verbatim from the current Biff code, except the
+  XTDB dependency is removed. This enables using Biff with other databases like
+  Postgres or Datomic.
 
 
 
@@ -48,7 +53,7 @@
 
 A Biff component for `chime`. Same as `com.biffweb/use-chime`, but without
   XTDB.
-<p><sub><a href="/blob/main/src/rain/biff.clj#L36-L46">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/biff.clj#L41-L51">Source</a></sub></p>
 
 ## <a name="rain.biff/use-jetty">`use-jetty`</a><a name="rain.biff/use-jetty"></a>
 ``` clojure
@@ -58,7 +63,7 @@ A Biff component for `chime`. Same as `com.biffweb/use-chime`, but without
 
 A Biff component for `jetty`. Same as `com.biffweb/use-jetty`, but without
   XTDB.
-<p><sub><a href="/blob/main/src/rain/biff.clj#L8-L21">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/biff.clj#L13-L26">Source</a></sub></p>
 
 ## <a name="rain.biff/use-shadow-cljs">`use-shadow-cljs`</a><a name="rain.biff/use-shadow-cljs"></a>
 ``` clojure
@@ -67,12 +72,13 @@ A Biff component for `jetty`. Same as `com.biffweb/use-jetty`, but without
 ```
 
 A Biff component for `shadow-cljs`.
-<p><sub><a href="/blob/main/src/rain/biff.clj#L23-L34">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/biff.clj#L28-L39">Source</a></sub></p>
 
 -----
 # <a name="rain.core">rain.core</a>
 
 
+Functions to support rendering pages with Reitit and Hiccup.
 
 
 
@@ -87,7 +93,7 @@ Returns a `<script>` tag in Hiccup format that encodes the
   `:rain/bootstrap-data` key from the Ring request as
   `application/transit+json`. If the `:rain/bootstrap-data` key is not found,
   returns `nil`.
-<p><sub><a href="/blob/main/src/rain/core.clj#L59-L67">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L60-L68">Source</a></sub></p>
 
 ## <a name="rain.core/csrf-meta-tag">`csrf-meta-tag`</a><a name="rain.core/csrf-meta-tag"></a>
 ``` clojure
@@ -103,7 +109,7 @@ Returns a `<meta>` tag for a CSRF token in Hiccup format if
   ```clojure
   [:meta {:name "csrf-token" :content "..."}]
   ```
-<p><sub><a href="/blob/main/src/rain/core.clj#L69-L80">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L70-L81">Source</a></sub></p>
 
 ## <a name="rain.core/export-pages">`export-pages`</a><a name="rain.core/export-pages"></a>
 ``` clojure
@@ -112,7 +118,7 @@ Returns a `<meta>` tag for a CSRF token in Hiccup format if
 ```
 
 Export static pages to a directory.
-<p><sub><a href="/blob/main/src/rain/core.clj#L155-L162">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L156-L163">Source</a></sub></p>
 
 ## <a name="rain.core/main-cljs-bundle-path">`main-cljs-bundle-path`</a><a name="rain.core/main-cljs-bundle-path"></a>
 ``` clojure
@@ -132,7 +138,7 @@ Returns the path to the main CLJS bundle if the manifest file exists.
   ; Prod:
   "/js/main.9528D63C2BDE006EA0667792187CAD3C.js"
   ```
-<p><sub><a href="/blob/main/src/rain/core.clj#L24-L40">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L25-L41">Source</a></sub></p>
 
 ## <a name="rain.core/main-cljs-bundle-tag">`main-cljs-bundle-tag`</a><a name="rain.core/main-cljs-bundle-tag"></a>
 ``` clojure
@@ -152,7 +158,7 @@ Returns a `<script>` tag for the main CLJS bundle if the manifest file
   ; Prod
   [:script {:src "/js/main.9528D63C2BDE006EA0667792187CAD3C.js"}]
   ```
-<p><sub><a href="/blob/main/src/rain/core.clj#L42-L57">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L43-L58">Source</a></sub></p>
 
 ## <a name="rain.core/main-stylesheet-path">`main-stylesheet-path`</a><a name="rain.core/main-stylesheet-path"></a>
 ``` clojure
@@ -163,7 +169,7 @@ Returns a `<script>` tag for the main CLJS bundle if the manifest file
 Returns the path of the main stylesheet if the manifest file exists.
   If no manifest file is found, try `public/css/main.css` instead. Otherwise
   returns `nil`.
-<p><sub><a href="/blob/main/src/rain/core.clj#L95-L103">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L96-L104">Source</a></sub></p>
 
 ## <a name="rain.core/main-stylesheet-tag">`main-stylesheet-tag`</a><a name="rain.core/main-stylesheet-tag"></a>
 ``` clojure
@@ -173,7 +179,7 @@ Returns the path of the main stylesheet if the manifest file exists.
 
 Returns the main stylesheet `<link>` tag if the main CSS file is found.
   Otherwise returns `nil`.
-<p><sub><a href="/blob/main/src/rain/core.clj#L105-L110">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L106-L111">Source</a></sub></p>
 
 ## <a name="rain.core/meta-tags">`meta-tags`</a><a name="rain.core/meta-tags"></a>
 ``` clojure
@@ -186,7 +192,7 @@ Returns a list of `<meta>` tags in Hiccup format.
   Included tags:
 
   - [`rain.core/csrf-meta-tag`](#rain.core/csrf-meta-tag)
-<p><sub><a href="/blob/main/src/rain/core.clj#L82-L89">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L83-L90">Source</a></sub></p>
 
 ## <a name="rain.core/script-tags">`script-tags`</a><a name="rain.core/script-tags"></a>
 ``` clojure
@@ -200,7 +206,7 @@ Returns list of `<script>` tags in Hiccup format.
 
   - [`rain.core/bootstrap-data-tag`](#rain.core/bootstrap-data-tag)
   - [`rain.core/main-cljs-bundle-tag`](#rain.core/main-cljs-bundle-tag)
-<p><sub><a href="/blob/main/src/rain/core.clj#L121-L131">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L122-L132">Source</a></sub></p>
 
 ## <a name="rain.core/site-routes">`site-routes`</a><a name="rain.core/site-routes"></a>
 ``` clojure
@@ -210,7 +216,7 @@ Returns list of `<script>` tags in Hiccup format.
 
 Returns site routes wrapped with the [`wrap-page`](#rain.core/wrap-page) middleware. This
   includes all routes except static routes.
-<p><sub><a href="/blob/main/src/rain/core.clj#L164-L170">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L165-L171">Source</a></sub></p>
 
 ## <a name="rain.core/static-pages">`static-pages`</a><a name="rain.core/static-pages"></a>
 ``` clojure
@@ -222,7 +228,7 @@ Return a map of page paths to page HTML, generated from the static routes.
 
   The `:static-paths` key in the route data can be used to control which paths
   are generated by this function.
-<p><sub><a href="/blob/main/src/rain/core.clj#L190-L209">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L191-L210">Source</a></sub></p>
 
 ## <a name="rain.core/stylesheet-tags">`stylesheet-tags`</a><a name="rain.core/stylesheet-tags"></a>
 ``` clojure
@@ -235,7 +241,7 @@ Returns a list of stylesheet `<link>` tags in Hiccup format.
   Included tags:
 
   - [`rain.core/main-stylesheet-tag`](#rain.core/main-stylesheet-tag)
-<p><sub><a href="/blob/main/src/rain/core.clj#L112-L119">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L113-L120">Source</a></sub></p>
 
 ## <a name="rain.core/wrap-page">`wrap-page`</a><a name="rain.core/wrap-page"></a>
 ``` clojure
@@ -250,12 +256,14 @@ A Ring middleware that adds support for page config keys in route definitions.
   - **`:server-props`** — Render props for a server-side rendered page.
   - **`:static-props`** — Render props for a static page.
   - **`:static-paths`** — Generate paths to be rendered as static pages.
-<p><sub><a href="/blob/main/src/rain/core.clj#L133-L153">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/core.clj#L134-L154">Source</a></sub></p>
 
 -----
 # <a name="rain.re-frame">rain.re-frame</a>
 
 
+Functions to support rendering Reagent and Re-frame components on both the
+  JVM and browser.
 
 
 
@@ -274,7 +282,7 @@ A dynamic var for the current Re-frame app DB.
   **Server:**
 
   An `IDeref` that always returns `{}`.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L11-L22">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L13-L24">Source</a></sub></p>
 
 ## <a name="rain.re-frame/atom">`atom`</a><a name="rain.re-frame/atom"></a>
 ``` clojure
@@ -291,7 +299,7 @@ Returns a Reagent atom.
   **Server:**
 
   Returns an `IDeref` that always returns the `init-val`.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L188-L200">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L207-L219">Source</a></sub></p>
 
 ## <a name="rain.re-frame/current-page">`current-page`</a><a name="rain.re-frame/current-page"></a>
 ``` clojure
@@ -300,7 +308,24 @@ Returns a Reagent atom.
 ```
 
 A Reagent component to render the current page.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L73-L79">Source</a></sub></p>
+
+     **Client:**
+
+     Renders the `:get` function in the current route match data as a Reagent
+     component. Use `[:rain.re-frame/set-page match]` to set the current route
+     match.
+
+     **Server:**
+
+     Not available. On the server, the `:get` function in the route match for
+     the request is called directly by [`rain.re-frame/wrap-rf`](#rain.re-frame/wrap-rf) to produce
+     Hiccup. This Hiccup is rendered in the `<div id="app">` within the final
+     HTML document before sending it to the client.
+
+     In addition, the `:server-props` or `:static-props` from the route match
+     data will be serialized into a `<script>` tag using Transit to allow for
+     client-side hydration.
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L75-L98">Source</a></sub></p>
 
 ## <a name="rain.re-frame/dispatch">`dispatch`</a><a name="rain.re-frame/dispatch"></a>
 ``` clojure
@@ -317,7 +342,7 @@ Dispatch a Re-frame event asynchronously.
   **Server:**
 
   No-op. Dispatching events is not supported on the server.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L162-L173">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L181-L192">Source</a></sub></p>
 
 ## <a name="rain.re-frame/dispatch-sync">`dispatch-sync`</a><a name="rain.re-frame/dispatch-sync"></a>
 ``` clojure
@@ -334,7 +359,7 @@ Dispatch a Re-frame event synchronously.
   **Server:**
 
   No-op. Dispatching events is not supported on the server.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L175-L186">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L194-L205">Source</a></sub></p>
 
 ## <a name="rain.re-frame/dispatcher">`dispatcher`</a><a name="rain.re-frame/dispatcher"></a>
 ``` clojure
@@ -353,7 +378,7 @@ Returns an event handler that dispatches a Re-frame event.
 
   Returns `nil`. This will cause the handler attribute (e.g. `:on-click`) to be
   omitted from the final HTML, preventing hydration errors.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L144-L160">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L163-L179">Source</a></sub></p>
 
 ## <a name="rain.re-frame/href-alpha">`href-alpha`</a><a name="rain.re-frame/href-alpha"></a>
 ``` clojure
@@ -376,7 +401,7 @@ Returns a path for a named route.
   **Server:**
 
   Same implementation on client and server.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L230-L249">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L249-L268">Source</a></sub></p>
 
 ## <a name="rain.re-frame/reg-event-db">`reg-event-db`</a><a name="rain.re-frame/reg-event-db"></a>
 ``` clojure
@@ -394,7 +419,7 @@ Register a Re-frame DB event handler.
   **Server:**
 
   No-op. Dispatching events is not supported on the server.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L114-L127">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L133-L146">Source</a></sub></p>
 
 ## <a name="rain.re-frame/reg-event-fx">`reg-event-fx`</a><a name="rain.re-frame/reg-event-fx"></a>
 ``` clojure
@@ -412,7 +437,7 @@ Register a Re-frame effect event handler.
   **Server:**
 
   No-op. Dispatching events is not supported on the server.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L129-L142">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L148-L161">Source</a></sub></p>
 
 ## <a name="rain.re-frame/reg-sub">`reg-sub`</a><a name="rain.re-frame/reg-sub"></a>
 ``` clojure
@@ -422,14 +447,14 @@ Register a Re-frame effect event handler.
 
 Register a Re-frame subscription.
 
-  **Client**
+  **Client:**
 
   Alias of `re-frame.core/reg-sub`.
 
-  **Server**
+  **Server:**
 
   Re-implementation of `re-frame.core/reg-sub`.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L84-L96">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L103-L115">Source</a></sub></p>
 
 ## <a name="rain.re-frame/set-page">`set-page`</a><a name="rain.re-frame/set-page"></a>
 ``` clojure
@@ -456,7 +481,7 @@ Dispatch the `[:rain.re-frame/set-page match]` event to change the page
      **Server:**
 
      Not available.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L34-L61">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L36-L63">Source</a></sub></p>
 
 ## <a name="rain.re-frame/subscribe">`subscribe`</a><a name="rain.re-frame/subscribe"></a>
 ``` clojure
@@ -473,7 +498,7 @@ Return a Re-frame subscription.
   **Server:**
 
   Re-implementation of `re-frame.core/subscribe`.
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L98-L112">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L117-L131">Source</a></sub></p>
 
 ## <a name="rain.re-frame/wrap-rf">`wrap-rf`</a><a name="rain.re-frame/wrap-rf"></a>
 ``` clojure
@@ -499,4 +524,4 @@ A Ring middleware to add support for Re-frame in server components.
   another inner function are accepted.
 
   [form2]: https://cljdoc.org/d/reagent/reagent/1.2.0/doc/tutorials/creating-reagent-components#form-2--a-function-returning-a-function
-<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L202-L228">Source</a></sub></p>
+<p><sub><a href="/blob/main/src/rain/re_frame.cljc#L221-L247">Source</a></sub></p>

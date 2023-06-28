@@ -1,4 +1,5 @@
 (ns rain.core
+  "Functions to support rendering pages with Reitit and Hiccup."
   (:require [babashka.json :as json]
             [clojure.edn :as edn]
             [clojure.java.io :as io]

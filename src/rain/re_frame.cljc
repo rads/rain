@@ -1,4 +1,6 @@
 (ns rain.re-frame
+  "Functions to support rendering Reagent and Re-frame components on both the
+  JVM and browser."
   (:refer-clojure :exclude [atom])
   (:require [reitit.core :as reitit]
             #?@(:cljs [[cognitect.transit :as t]
@@ -71,7 +73,24 @@
 
 #?(:cljs
    (defn current-page
-     "A Reagent component to render the current page."
+     "A Reagent component to render the current page.
+
+     **Client:**
+
+     Renders the `:get` function in the current route match data as a Reagent
+     component. Use `[:rain.re-frame/set-page match]` to set the current route
+     match.
+
+     **Server:**
+
+     Not available. On the server, the `:get` function in the route match for
+     the request is called directly by `rain.re-frame/wrap-rf` to produce
+     Hiccup. This Hiccup is rendered in the `<div id=\"app\">` within the final
+     HTML document before sending it to the client.
+
+     In addition, the `:server-props` or `:static-props` from the route match
+     data will be serialized into a `<script>` tag using Transit to allow for
+     client-side hydration."
      [_]
      (let [page (rf/subscribe [::page])]
        (fn [props]
@@ -84,11 +103,11 @@
 (defn reg-sub
   "Register a Re-frame subscription.
 
-  **Client**
+  **Client:**
 
   Alias of `re-frame.core/reg-sub`.
 
-  **Server**
+  **Server:**
 
   Re-implementation of `re-frame.core/reg-sub`."
   [query-id f]
