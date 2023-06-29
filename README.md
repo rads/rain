@@ -55,6 +55,8 @@ See the [Usage](#usage) section for examples on how to use the library to build 
 
 Rain supports multiple rendering patterns. See the table below to find an example based on your needs.
 
+*Note:* This table is a work-in-progress and may change as Rain matures. For a more nuanced view of rendering patterns, see the [Additional Resources](#additional-resources) section.
+
 <table>
   <thead>
     <tr>
@@ -174,3 +176,7 @@ Rain supports multiple rendering patterns. See the table below to find an exampl
 </tbody>
 </table>
 
+## Additional Resources
+
+- [**"Rendering Patterns" on patterns.dev**](https://www.patterns.dev/posts/rendering-patterns)
+- [**"Rendering on the Web" on web.dev**](https://web.dev/rendering-on-the-web/)
