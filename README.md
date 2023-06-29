@@ -161,7 +161,7 @@ Rain supports multiple rendering patterns. See the table below to find an exampl
     <td><strong>First Content Paint (FCP)?</strong></td>
     <td>Good</td>
     <td>Good</td>
-    <td>Bad</td>
+    <td>Varies</td>
     <td>Good</td>
     <td>Good</td>
   </tr>
@@ -169,9 +169,9 @@ Rain supports multiple rendering patterns. See the table below to find an exampl
     <td><strong>Time-to-Interactive (TTI)?</strong></td>
     <td>Good</td>
     <td>Good</td>
-    <td>Bad</td>
+    <td>Varies</td>
     <td>Good</td>
-    <td>Bad</td>
+    <td>Varies</td>
   </tr>
 </tbody>
 </table>
