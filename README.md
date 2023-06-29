@@ -2,6 +2,10 @@
 
 **A Clojure/Script library for fast and flexible web apps.**
 
+> *When you start architecting a new web app, one of the foundational decisions you make is - "How and where do I want to render content?". Should it be rendered on the web server, build server, on the Edge, or directly on the client? Should it be rendered all at once, partially, or progressively?* ([patterns.dev](https://www.patterns.dev/posts/rendering-patterns))
+
+Rain helps you answer this question. Once you decide on an approach, you can use `rain new` to create an app from scratch and deploy it to a JAMstack host or VPS cloud provider in minutes. Check out the [Installation](#installation) and [Usage](#usage) sections to get started.
+
 - Supports multiple rendering patterns in the same app:
     - Static Site Generation (SSG)
     - Incremental Static Generation (ISG)
