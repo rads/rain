@@ -24,6 +24,7 @@ Rain helps you answer these questions. Once you decide on an approach, you can u
 - [Installation](#installation)
 - [Docs](#docs)
 - [Usage](#usage)
+- [Additional Resources](#additional-resources)
 
 ## Installation
 
