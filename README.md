@@ -27,11 +27,25 @@ Rain helps you answer these questions. Once you decide on an approach, you can u
 
 ## Installation
 
+### Command-Line Tool (CLI)
+
+First, install [`bbin`](https://github.com/babashka/bbin). Then run the following command:
+
+```
+bbin install io.github.rads/rain
+```
+
+Now you can run `rain` in your shell to see the docs for the CLI tool.
+
+### Library
+
 Add `io.github.rads/rain` to your `deps.edn`:
 
 ```clojure
 io.github.rads/rain {:git/tag "v0.1.5" :git/sha "e38aead"}
 ```
+
+See the [Usage](#usage) section for examples on how to use the library to build an app.
 
 ## Docs
 
