@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.6
+
+- [Fix #16: SSG template](https://github.com/rads/rain/issues/16)
+
 ## 0.1.5
 
 - [Fix #7: Fill in docstrings](https://github.com/rads/rain/issues/7)
