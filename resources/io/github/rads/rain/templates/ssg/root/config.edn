@@ -1,0 +1,9 @@
+{:prod {:biff.beholder/enabled false}
+ :dev {:merge [:prod]
+       :biff.beholder/enabled true}
+ :tasks {:biff.tasks/clj-args ["-J-XX:-OmitStackTraceInFastThrow"
+                               "-J-XX:+CrashOnOutOfMemoryError"
+                               "-J-Duser.timezone=UTC"
+                               "-M" "-m" "{{top/ns}}.{{main/ns}}"
+                               "--port" "7888"
+                               "--middleware" "[cider.nrepl/cider-middleware,refactor-nrepl.middleware/wrap-refactor]"]}}

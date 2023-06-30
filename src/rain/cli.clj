@@ -1,6 +1,7 @@
 (ns ^:no-doc rain.cli
   (:refer-clojure :exclude [test])
   (:require [babashka.cli :as cli]
+            [babashka.fs :as fs]
             [babashka.process :as p]
             [clojure.edn :as edn]
             [clojure.string :as str]))
@@ -21,6 +22,9 @@
       (System/getenv "NO_COLOR")
       (= "dumb" (System/getenv "TERM"))))
 
+(defn magenta [s cli-opts]
+  (if (no-color? cli-opts) s (str "\033[35m" s "\033[0m")))
+
 (defn bold [s cli-opts]
   (if (no-color? cli-opts) s (str "\033[1m" s "\033[0m")))
 
@@ -36,12 +40,24 @@
         {:command "rain help" :doc "Display rain help"}]
        (remove nil?)))
 
+(defn prefix [k cli-opts]
+  (bold (magenta (format "[rain/%s] " (name k)) cli-opts) cli-opts))
+
+(defn shell* [opts & args]
+  (let [args' (if (coll? (first args)) (first args) args)]
+    (binding [*out* *err*]
+      (println)
+      (println (str (prefix :shell opts)
+                    (bold (str (str/join " " args')) opts))))
+    (apply p/shell opts args')))
+
 (defn exec* [opts & args]
   (let [args' (if (coll? (first args)) (first args) args)]
     (binding [*out* *err*]
-      (println (bold (apply str "[rain] " (str/join " " args'))
-                     opts)))
-    (apply p/exec args')))
+      (println)
+      (println (str (prefix :shell opts)
+                    (bold (str/join " " args') opts))))
+    (apply p/exec opts args')))
 
 (defn help [& _]
   (let [max-width (apply max (map #(count (:command %)) help-commands))
@@ -51,6 +67,10 @@
     (println (str "Version: 0.1.x"))
     (println)
     (println (str "Usage: rain <command>\n\n" (str/join "\n" lines)))))
+
+(defn info [text cli-opts]
+  (binding [*out* *err*]
+    (println (str (prefix :info cli-opts) (bold text cli-opts)))))
 
 (def read-bb-edn
   (memoize #(edn/read-string (slurp "bb.edn"))))
@@ -62,8 +82,28 @@
   (let [{:keys [template]} opts
         template' (str "io.github.rads/rain.templates." (or template "ssg"))
         git-url (or (:git/url opts) "https://github.com/rads/rain")
-        create-opts (merge opts {:template template' :git/url git-url})]
-    (apply exec* opts "neil" "new" (mapcat identity create-opts))))
+        deps-opts (if (:local/root opts)
+                    (select-keys opts [:local/root])
+                    {:git/url git-url})
+        create-opts (-> (merge opts {:template template'} deps-opts)
+                        (update-keys #(str "--" (subs (str %) 1))))]
+    (apply shell* opts
+           "neil" "new" (mapcat identity create-opts))
+    (let [proj-dir (name (edn/read-string (:name opts)))]
+      (shell* {:dir proj-dir} "git init")
+      (shell* {:dir proj-dir} "git add .")
+      (shell* {:dir proj-dir} "git commit -m 'First commit'")
+      (println)
+      (info (str "New project created:") opts)
+      (info "" opts)
+      (info (str (format "  Template:  %s" template')) opts)
+      (info (str (format "  Directory: %s" (fs/absolutize proj-dir))) opts)
+      (info (str (format "  Namespace: %s" (str/replace (:name opts) "/" "."))) opts)
+      (info "" opts)
+      (info (str "Now you can go to your project and start the dev server:") opts)
+      (info "" opts)
+      (info (str (format "  cd %s && bb dev" proj-dir)) opts)
+      (println))))
 
 (defn dev [{:keys [opts]}]
   (if (bb-task 'dev)

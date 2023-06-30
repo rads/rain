@@ -1,4 +1,6 @@
-{:scratch "scratch"
- :transform
- [["src" "src"
-   {"scratch.clj" "{{scratch/file}}.clj"}]]}
+{:transform [["." "." {"gitignore" ".gitignore"} :only]
+             ["github" ".github"]
+             ["src" "src/{{top/file}}"
+              {"myproj.clj" "{{main/file}}.clj"
+               "myproj/app.clj" "{{main/file}}/app.clj"
+               "myproj/ui.clj" "{{main/file}}/ui.clj"}]]}
