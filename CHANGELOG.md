@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.7
+
+- [Update rain dep in SSG template](https://github.com/rads/rain/commit/154edd0320492ea796de3b194e5dd129b3bd07d1)
+
 ## 0.1.6
 
 - [Fix #16: SSG template](https://github.com/rads/rain/issues/16)
