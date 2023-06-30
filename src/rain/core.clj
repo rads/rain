@@ -63,7 +63,7 @@
   `application/transit+json`. If the `:rain/bootstrap-data` key is not found,
   returns `nil`."
   [{:rain/keys [bootstrap-data] :as _request}]
-  (when bootstrap-data
+  (when (and (main-cljs-bundle-path) bootstrap-data)
     [:script#bootstrap-data {:type "application/transit+json"}
      [:hiccup/raw-html (->transit-str bootstrap-data)]]))
 
