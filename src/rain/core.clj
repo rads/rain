@@ -60,10 +60,14 @@
 (defn bootstrap-data-tag
   "Returns a `<script>` tag in Hiccup format that encodes the
   `:rain/bootstrap-data` key from the Ring request as
-  `application/transit+json`. If the `:rain/bootstrap-data` key is not found,
-  returns `nil`."
+  `application/transit+json`.
+
+  If either of the following conditions are true, this function returns `nil`:
+
+    - `main-cljs-bundle-path` returns `nil` (i.e. we're not using CLJS)
+    - `:rain/bootstrap-data` key is not found in the request"
   [{:rain/keys [bootstrap-data] :as _request}]
-  (when bootstrap-data
+  (when (and (main-cljs-bundle-path) bootstrap-data)
     [:script#bootstrap-data {:type "application/transit+json"}
      [:hiccup/raw-html (->transit-str bootstrap-data)]]))
 
