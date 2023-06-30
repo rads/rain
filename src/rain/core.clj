@@ -146,7 +146,8 @@
           match (ring/get-match request)
           {:keys [server-props static-props layout]
            :or {layout default-layout}} (:data match)
-          props ((or server-props static-props) request)
+          get-props (or server-props static-props (constantly nil))
+          props (get-props request)
           request' (assoc request :rain/bootstrap-data {:props props})
           body (->> props handler (layout request') render)]
       {:status 200
@@ -162,13 +163,18 @@
     (io/make-parents full-path)
     (spit full-path content)))
 
+(defn- static-route? [route]
+  (let [[_ {:keys [static-props static-paths]}] route]
+    (or static-props static-paths)))
+
 (defn site-routes
   "Returns site routes wrapped with the `wrap-page` middleware. This
   includes all routes except static routes."
   [routes]
   (r/routes
-    (r/router (remove (fn [[_ {:keys [static-props]}]] static-props) routes)
-              {:data {:middleware [wrap-page]}})))
+    (r/router
+      (remove static-route? (r/routes (r/router routes)))
+      {:data {:middleware [wrap-page]}})))
 
 (defn- static-routes
   "Returns static routes wrapped with the `wrap-page` middleware. This only
@@ -180,7 +186,7 @@
   - If a route path doesn't have an extension, it will be renamed to end with `.html`."
   [routes]
   (let [base (->> (r/routes (r/router routes))
-                  (filter (fn [[_ {:keys [static-props]}]] static-props))
+                  (filter static-route?)
                   (map (fn [[p c]] [(if (str/ends-with? p "/") (str p "index") p) c]))
                   (map (fn [[p c]] [(str p ".html") c])))]
     (r/routes
