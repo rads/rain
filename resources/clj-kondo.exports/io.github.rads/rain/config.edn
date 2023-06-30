@@ -1,1 +1,0 @@
-{:lint-as {rain.re-frame/event clojure.core/fn}}
