@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.8
+
+- [Fix error when `:static-paths` is provided without `:static-props`](https://github.com/rads/rain/commit/763e9124f086469b62dab4ee65878c49349c5bed)
+- [Move static route transforms to `static-pages`](https://github.com/rads/rain/commit/2de4c13f80af515d84b5993d7769530964c48813)
+- [Omit bootstrap data if `main-cljs-bundle-path` returns `nil`](https://github.com/rads/rain/commit/195eea303f5ba454f7de448cbcefeb99844e626c)
+- [Fix #20: Hydration template](https://github.com/rads/rain/issues/20)
+
 ## 0.1.7
 
 - [Update rain dep in SSG template](https://github.com/rads/rain/commit/154edd0320492ea796de3b194e5dd129b3bd07d1)
