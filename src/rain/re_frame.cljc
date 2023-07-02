@@ -59,8 +59,7 @@
                       (when-not (:page db) (:props @bootstrap-data))
                       {:page page :match match})
            fx (-> match :data :fx seq)]
-       (merge {:db db'
-               :fx fx}))))
+       (merge {:db db'} (when fx {:fx fx})))))
 
 #?(:cljs
    (rf/reg-event-fx ::set-page set-page))

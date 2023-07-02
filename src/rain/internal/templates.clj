@@ -7,6 +7,9 @@
     (.nextBytes (SecureRandom/getInstanceStrong) buffer)
     (.encodeToString (Base64/getEncoder) buffer)))
 
+(defn- generate-secrets []
+  {:cookie-secret (new-secret 16)
+   :jwt-secret (new-secret 32)})
+
 (defn hydration-data-fn [data]
-  (merge data {:cookie-secret (new-secret 16)
-               :jwt-secret (new-secret 32)}))
+  (merge data (generate-secrets)))

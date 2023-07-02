@@ -215,6 +215,6 @@
                                                    ::r/match m})]
                            [(:path m) request])))
                   (map (fn [[p c]] [(if (str/ends-with? p "/") (str p "index") p) c]))
-                  (map (fn [[p c]] [(str p ".html") c]))
+                  (map (fn [[p c]] [(if (str/ends-with? p ".html") p (str p ".html")) c]))
                   (map (fn [[p c]] [p (:body (handler c))]))
                   (into {}))))))

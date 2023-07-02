@@ -1,0 +1,5 @@
+{:deps {com.biffweb/tasks {:git/url "https://github.com/jacobobryant/biff"
+                           :git/tag "v0.7.6" :git/sha "d0a3248"
+                           :deps/root "tasks"}}
+ :tasks {dev com.biffweb.tasks/dev
+         full-build (clojure "-X {{top/ns}}.{{main/ns}}/full-build")}}

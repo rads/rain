@@ -21,15 +21,8 @@
 (def plugins
   [app/plugin])
 
-(defn server-routes [plugins]
-  [["" {:middleware [biff/wrap-site-defaults]}
-    (rain/site-routes (keep :routes plugins))]
-
-   ["" {:middleware [biff/wrap-api-defaults]}
-    (keep :api-routes plugins)]])
-
 (def handler
-  (-> (biff/reitit-handler {:routes (server-routes plugins)})
+  (-> (constantly {:status 404})
       biff/wrap-base-defaults))
 
 (defn on-save [ctx]
@@ -47,10 +40,9 @@
 
 (def components
   [biff/use-config
-   biff/use-secrets
+   biff/use-beholder
    rain-biff/use-shadow-cljs
-   rain-biff/use-jetty
-   biff/use-beholder])
+   rain-biff/use-jetty])
 
 (defn start []
   (let [new-system (reduce (fn [system component]

@@ -34,7 +34,7 @@
   {:biff/plugins #'plugins
    :biff.beholder/on-save #'on-save
    :biff/handler #'handler
-   :rain/layout ui/layout})
+   :rain/layout #'ui/layout})
 
 (defonce system (atom {}))
 

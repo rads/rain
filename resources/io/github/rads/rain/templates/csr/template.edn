@@ -1,0 +1,7 @@
+{:transform [["." "." {"gitignore" ".gitignore"} :only]
+             ["github" ".github"]
+             ["src" "src/{{top/file}}"
+              {"myproj.clj" "{{main/file}}.clj"
+               "myproj.cljs" "{{main/file}}.cljs"
+               "myproj/app.cljc" "{{main/file}}/app.cljc"
+               "myproj/ui.clj" "{{main/file}}/ui.clj"}]]}
