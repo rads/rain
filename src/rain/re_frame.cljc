@@ -92,9 +92,9 @@
      client-side hydration."
      [_]
      (let [page (rf/subscribe [::page])]
-       (fn [props]
+       (fn [_]
          (when @page
-           [@page props])))))
+           [@page (:props @bootstrap-data)])))))
 
 #?(:clj
    (def ^:private subscriptions (clojure.core/atom {})))
