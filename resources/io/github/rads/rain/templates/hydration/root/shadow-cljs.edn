@@ -1,0 +1,13 @@
+{:deps true
+ :builds
+ {:dev {:target :browser
+        :output-dir "target/resources/public/js"
+        :asset-path "/js"
+        :modules {:main {:init-fn {{top/ns}}.{{main/ns}}/start!}}
+        :devtools {:watch-dir "target/resources/public"}}
+  :prod {:target :browser
+         :output-dir "target/resources/public/js"
+         :asset-path "/js"
+         :modules {:main {:init-fn {{top/ns}}.{{main/ns}}/start!}}
+         :module-hash-names true
+         :compiler-options {:optimizations :advanced}}}}

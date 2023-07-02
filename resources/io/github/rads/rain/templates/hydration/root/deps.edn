@@ -1,0 +1,21 @@
+{:paths ["src" "resources" "target/resources"]
+
+ :deps {babashka/fs {:mvn/version "0.4.18"}
+        com.biffweb/biff {:git/url "https://github.com/jacobobryant/biff"
+                          :git/tag "v0.7.6" :git/sha "d0a3248"}
+        io.github.rads/rain {:git/tag "v0.1.5" :git/sha "e38aead"}
+        org.clojure/clojure {:mvn/version "1.12.0-alpha3"}
+        org.slf4j/slf4j-simple {:mvn/version "2.0.7"}
+        superstructor/re-frame-fetch-fx {:mvn/version "0.2.0"}}
+
+ :aliases
+ {:neil
+  {:project {:version "0.0.1-SNAPSHOT"
+             :name {{top/ns}}/{{main/ns}}}}
+
+  :test
+  {:extra-paths ["test"]
+   :extra-deps {io.github.cognitect-labs/test-runner
+                {:git/tag "v0.5.0" :git/sha "b3fd0d2"}}
+   :main-opts ["-m" "cognitect.test-runner"]
+   :exec-fn cognitect.test-runner.api/test}}}

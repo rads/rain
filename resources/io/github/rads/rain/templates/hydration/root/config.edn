@@ -1,0 +1,22 @@
+{:prod {:biff/base-url "https://example.com"
+        :biff.beholder/enabled false
+        :biff.middleware/cookie-secret "COOKIE_SECRET"
+        :biff/jwt-secret "JWT_SECRET"
+        :shadow-cljs/mode :prod}
+ :dev {:merge [:prod]
+       :biff.beholder/enabled true
+       :biff/host "0.0.0.0"
+       :biff/port 8080
+       :biff/base-url "http://localhost:8080"
+       :biff.middleware/secure false
+       :shadow-cljs/mode :dev}
+ :tasks {:biff.tasks/tailwind-file nil
+         :biff.tasks/clj-args ["-J-XX:-OmitStackTraceInFastThrow"
+                               "-J-XX:+CrashOnOutOfMemoryError"
+                               "-J-Duser.timezone=UTC"
+                               "-M" "-m" "{{top/ns}}.{{main/ns}}"
+                               "--port" "7888"
+                               "--middleware" "[cider.nrepl/cider-middleware,refactor-nrepl.middleware/wrap-refactor]"]
+         :biff.tasks/on-soft-deploy "\"({{top/ns}}.{{main/ns}}/on-save @{{top/ns}}.{{main/ns}}/system)\""
+         :biff.tasks/deploy-cmd ["git" "push" "prod" "main:master" "--force-with-lease"]
+         :biff.tasks/server "example.com"}}

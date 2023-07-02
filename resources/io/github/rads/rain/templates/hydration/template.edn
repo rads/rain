@@ -1,0 +1,12 @@
+{:data-fn rain.internal.templates/hydration-data-fn
+ :transform [["." "." {"gitignore" ".gitignore"} :only]
+             ["github" ".github"]
+             ["src" "src/{{top/file}}"
+              {"myproj.clj" "{{main/file}}.clj"
+               "myproj.cljs" "{{main/file}}.cljs"
+               "myproj/app.cljc" "{{main/file}}/app.cljc"
+               "myproj/ui.clj" "{{main/file}}/ui.clj"}]
+             ["test" "test/{{top/file}}"
+              {"myproj/app_test.clj" "{{main/file}}/app_test.clj"}]
+             ["tasks" "tasks"
+              {"src/myproj/tasks.clj" "src/{{top/file}}/{{main/file}}/tasks.clj"}]]}

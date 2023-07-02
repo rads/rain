@@ -151,7 +151,7 @@
 
 (def commands
   [{:cmds ["help"] :fn help}
-   {:cmds ["new"] :fn new* :args->opts [:name]}
+   {:cmds ["new"] :fn new* :args->opts [:name] :alias {:t :template}}
    {:cmds ["dev"] :fn dev}
    {:cmds ["test"] :fn test}
    {:cmds ["test-clj"] :fn test-clj}
