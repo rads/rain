@@ -25,12 +25,16 @@
 
 #?(:cljs (def ^:private transit-reader (t/reader :json)))
 
+(defn read-transit [s]
+  #?(:cljs
+     (t/read transit-reader s)))
+
 #?(:cljs
    (def ^:private bootstrap-data
      (delay
        (some->> (js/document.getElementById "bootstrap-data")
                 (.-innerHTML)
-                (t/read transit-reader)))))
+                read-transit))))
 
 #?(:cljs
    (defn set-page
