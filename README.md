@@ -43,7 +43,7 @@ Now you can run `rain` in your shell to see the docs for the CLI tool.
 Add `io.github.rads/rain` to your `deps.edn`:
 
 ```clojure
-io.github.rads/rain {:git/tag "v0.1.7" :git/sha "5d92b98"}
+io.github.rads/rain {:git/tag "v0.1.8" :git/sha "c490345"}
 ```
 
 See the [Usage](#usage) section for examples on how to use the library to build an app.
@@ -77,6 +77,14 @@ Rain supports multiple rendering patterns. See the table below to find an exampl
     <td><a href="#">TODO</a></td>
     <td><a href="#">TODO</a></td>
     <td><a href="http://github.com/rads/rain.examples.todomvc">rain.examples.todomvc</a></td>
+  </tr>
+  <tr>
+    <td><strong>Command</strong></td>
+    <td><code>rain new -t ssg</code></td>
+    <td>TODO</td>
+    <td>TODO</td>
+    <td>TODO</td>
+    <td><code>rain new -t hydration</code></td>
   </tr>
   <tr>
     <td><strong>Use Cases</strong></td>
