@@ -148,11 +148,14 @@
     (let [default-layout (or (:rain/layout request) (fn [_ content] content))
           render (or (:rain/render request) huff/html)
           match (ring/get-match request)
-          {:keys [server-props static-props layout]
+          {:keys [server-props static-props omit-bootstrap-data layout]
            :or {layout default-layout}} (:data match)
           get-props (or server-props static-props (constantly nil))
           props (get-props request)
-          request' (assoc request :rain/bootstrap-data {:props props})
+          bootstrap-data {:props (if omit-bootstrap-data
+                                   (apply dissoc props omit-bootstrap-data)
+                                   props)}
+          request' (assoc request :rain/bootstrap-data bootstrap-data)
           body (->> props handler (layout request') render)]
       {:status 200
        :headers {"content-type" "text/html"}
