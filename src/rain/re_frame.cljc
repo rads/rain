@@ -61,7 +61,9 @@
      [{:keys [db]} [_ match]]
      (let [page (-> match :data :get)
            db' (merge db
-                      (when-not (:page db) (:props @bootstrap-data))
+                      (if (:page db)
+                        {:first-load false}
+                        (merge (:props @bootstrap-data) {:first-load true}))
                       {:page page :match match})
            fx (-> match :data :fx seq)]
        (merge {:db db'} (when fx {:fx fx})))))
