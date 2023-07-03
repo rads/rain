@@ -3,7 +3,8 @@
   JVM and browser."
   (:refer-clojure :exclude [atom])
   (:require [reitit.core :as reitit]
-            #?@(:cljs [[cognitect.transit :as t]
+            #?@(:clj [[huff.core :as huff]]
+                :cljs [[cognitect.transit :as t]
                        [re-frame.core :as rf]
                        [re-frame.db :as rf-db]
                        [reagent.core :as r]]))
@@ -244,8 +245,7 @@
   #?(:clj
      (fn [props]
        (binding [*app-db* (reify IDeref (deref [_] props))]
-         (let [nodes (page-fn props)]
-           (if (fn? nodes) (nodes props) nodes))))
+         [:hiccup/raw-html (huff/html [page-fn props])]))
 
      :cljs page-fn))
 
