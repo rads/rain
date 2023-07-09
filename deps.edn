@@ -5,7 +5,9 @@
                                   :git/sha "0a464f940f18388747d5d9bdda9d96a3665054e3"}
         jarohen/chime {:mvn/version "0.3.3"}
         info.sunng/ring-jetty9-adapter {:mvn/version "0.22.0"}
-        metosin/reitit {:mvn/version "0.7.0-alpha5"}
+        metosin/reitit {:mvn/version "0.7.0-alpha5"
+                        :exclusions [metosin/reitit-frontend]}
+        io.github.rads/reitit-frontend {:mvn/version "0.7.0-alpha5-rain1"}
         org.babashka/cli {:mvn/version "0.7.52"}
         org.babashka/json {:mvn/version "0.1.1"}
         org.clojure/tools.logging {:mvn/version "1.2.4"}

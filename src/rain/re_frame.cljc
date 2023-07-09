@@ -5,9 +5,13 @@
   (:require [reitit.core :as reitit]
             #?@(:clj [[huff.core :as huff]]
                 :cljs [[cognitect.transit :as t]
+                       [goog.functions :refer [debounce]]
+                       [goog.events :as gevents]
                        [re-frame.core :as rf]
                        [re-frame.db :as rf-db]
-                       [reagent.core :as r]]))
+                       [reagent.core :as r]
+                       [reitit.frontend.history :as rfh]
+                       ["react" :refer [useEffect useState]]]))
   #?(:clj (:import (clojure.lang IDeref)))
   #?(:cljs (:require-macros [rain.re-frame])))
 
@@ -59,23 +63,42 @@
 
      Not available."
      [{:keys [db]} [_ match]]
-     (let [page (-> match :data :get)
-           db' (merge db
-                      (if (:page db)
+     (let [db' (merge db
+                      (if (:match db)
                         {:first-load false}
                         (merge (:props @bootstrap-data) {:first-load true}))
-                      {:page page :match match})
+                      {:match match})
            fx (-> match :data :fx seq)]
        (merge {:db db'} (when fx {:fx fx})))))
 
 #?(:cljs
    (rf/reg-event-fx ::set-page set-page))
 
+#?(:cljs (rf/reg-sub ::match (fn [{:keys [match]}] match)))
+
 #?(:cljs
-   (rf/reg-sub
-     ::page
-     (fn [{:keys [page]}]
-       page)))
+   (defn- use-scroll-restoration [match]
+     (let [[prev set-prev] (useState nil)
+           page (-> match :data :get)]
+       (useEffect
+         (fn []
+           (when (not= prev page)
+             (when-let [event (:event match)]
+               (if (and (= gevents/EventType.POPSTATE (.-type event))
+                        (.-state event))
+                 (.scrollTo js/window
+                            (.-scrollX (.-state event))
+                            (.-scrollY (.-state event)))
+                 (.scrollTo js/window 0 0)))
+             (set-prev page))
+           js/undefined)
+         #js[page]))))
+
+#?(:cljs
+   (defn- current-page* [match]
+     (let [page (-> match :data :get)]
+       (use-scroll-restoration match)
+       [page (:props @bootstrap-data)])))
 
 #?(:cljs
    (defn current-page
@@ -98,10 +121,8 @@
      data will be serialized into a `<script>` tag using Transit to allow for
      client-side hydration."
      [_]
-     (let [page (rf/subscribe [::page])]
-       (fn [_]
-         (when @page
-           [@page (:props @bootstrap-data)])))))
+     (when-let [match @(rf/subscribe [::match])]
+       [:f> current-page* match])))
 
 #?(:clj
    (def ^:private subscriptions (clojure.core/atom {})))
@@ -271,3 +292,16 @@
    (-> router
        (reitit/match-by-name name path-params)
        reitit/match->path)))
+
+#?(:cljs
+   (defn add-scroll-restoration-listener! [router-atom]
+     (js/document.addEventListener
+       "scroll"
+       (debounce (fn [_]
+                   (.replaceState js/window.history
+                                  #js{:scrollX js/window.scrollX
+                                      :scrollY js/window.scrollY}
+                                  ""
+                                  (rfh/-get-path @router-atom)))
+                 100)
+       true)))
