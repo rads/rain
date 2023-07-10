@@ -77,30 +77,6 @@
 #?(:cljs (rf/reg-sub ::match (fn [{:keys [match]}] match)))
 
 #?(:cljs
-   (defn- use-scroll-restoration [match]
-     (let [[prev set-prev] (useState nil)
-           page (-> match :data :get)]
-       (useEffect
-         (fn []
-           (when (not= prev page)
-             (when-let [event (:event match)]
-               (if (and (= gevents/EventType.POPSTATE (.-type event))
-                        (.-state event))
-                 (.scrollTo js/window
-                            (.-scrollX (.-state event))
-                            (.-scrollY (.-state event)))
-                 (.scrollTo js/window 0 0)))
-             (set-prev page))
-           js/undefined)
-         #js[page]))))
-
-#?(:cljs
-   (defn- current-page* [match]
-     (let [page (-> match :data :get)]
-       (use-scroll-restoration match)
-       [page (:props @bootstrap-data)])))
-
-#?(:cljs
    (defn current-page
      "A Reagent component to render the current page.
 
@@ -122,7 +98,8 @@
      client-side hydration."
      [_]
      (when-let [match @(rf/subscribe [::match])]
-       [:f> current-page* match])))
+       (let [page (-> match :data :get)]
+         [page match]))))
 
 #?(:clj
    (def ^:private subscriptions (clojure.core/atom {})))
@@ -294,7 +271,7 @@
        reitit/match->path)))
 
 #?(:cljs
-   (defn add-scroll-restoration-listener! [router-atom]
+   (defn add-scroll-listener! [router-atom]
      (js/document.addEventListener
        "scroll"
        (debounce (fn [_]
@@ -305,3 +282,21 @@
                                   (rfh/-get-path @router-atom)))
                  100)
        true)))
+
+#?(:cljs
+   (rf/reg-fx
+     ::scroll
+     (fn [{:keys [x y]}]
+       (.scrollTo js/window x y))))
+
+#?(:cljs
+   (rf/reg-event-fx
+     ::restore-scroll-position
+     (fn [{:keys [db]} _]
+       (let [{:keys [match]} db]
+         (when-let [event (:event match)]
+           (if (and (= gevents/EventType.POPSTATE (.-type event))
+                    (.-state event))
+             {:fx [[::scroll {:x (.-scrollX (.-state event))
+                              :y (.-scrollY (.-state event))}]]}
+             {:fx [[::scroll {:x 0 :y 0}]]}))))))
