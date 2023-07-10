@@ -304,6 +304,7 @@
      (fn [{:keys [db]} _]
        (let [{:keys [match]} db
              {:keys [event fragment]} match]
+         (println match event fragment)
          (when event
            (if (and (= gevents/EventType.POPSTATE (.-type event))
                     (.-state event))
