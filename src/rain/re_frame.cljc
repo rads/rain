@@ -308,8 +308,14 @@
          (when event
            (if (and (= gevents/EventType.POPSTATE (.-type event))
                     (.-state event))
-             {:fx [[::scroll-to {:x (.-scrollX (.-state event))
-                                 :y (.-scrollY (.-state event))}]]}
+             (do
+               (println "scroll-to state")
+               {:fx [[::scroll-to {:x (.-scrollX (.-state event))
+                                   :y (.-scrollY (.-state event))}]]})
              (if fragment
-               {:fx [[::scroll-into-view fragment]]}
-               {:fx [[::scroll-to {:x 0 :y 0}]]})))))))
+               (do
+                 (println "scroll into view")
+                 {:fx [[::scroll-into-view fragment]]})
+               (do
+                 (println "scroll-to top")
+                 {:fx [[::scroll-to {:x 0 :y 0}]]}))))))))
