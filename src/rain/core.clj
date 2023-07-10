@@ -159,7 +159,8 @@
           body (->> props handler (layout request') render)]
       {:status 200
        :headers {"content-type" "text/html"}
-       :body body})))
+       :body body
+       :rain/bootstrap-data bootstrap-data})))
 
 (defn export-pages
   "Export static pages to a directory."
@@ -209,7 +210,10 @@
     (apply merge
            (for [n (set (keep (fn [[_ {:keys [name]}]] name) routes))
                  :let [match #(apply r/match-by-name router n %&)
-                       static-paths (:static-paths (:data (match)))]]
+                       static-paths (:static-paths (:data (match)))
+                       json-entry (fn [p bootstrap-data]
+                                    [(str/replace p #"\.html" ".json")
+                                     (->transit-str bootstrap-data)])]]
              (->> (if static-paths (static-paths) [{}])
                   (map (fn [d]
                          (let [m (match d)
@@ -219,7 +223,9 @@
                            [(:path m) request])))
                   (map (fn [[p c]] [(if (str/ends-with? p "/") (str p "index") p) c]))
                   (map (fn [[p c]] [(if (str/ends-with? p ".html") p (str p ".html")) c]))
-                  (map (fn [[p c]] [p (:body (handler c))]))
+                  (mapcat (fn [[p c]]
+                            (let [{:keys [body rain/bootstrap-data]} (handler c)]
+                              [[p body] (json-entry p bootstrap-data)])))
                   (into {}))))))
 
 (defn wrap-clean-urls
