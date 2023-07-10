@@ -285,18 +285,30 @@
 
 #?(:cljs
    (rf/reg-fx
-     ::scroll
+     ::scroll-to
      (fn [{:keys [x y]}]
        (.scrollTo js/window x y))))
+
+#?(:cljs
+   (rf/reg-fx
+     ::scroll-into-view
+     (fn [fragment]
+       (js/setTimeout
+         (fn []
+           (.scrollIntoView (js/document.getElementById fragment)))
+         1))))
 
 #?(:cljs
    (rf/reg-event-fx
      ::restore-scroll-position
      (fn [{:keys [db]} _]
-       (let [{:keys [match]} db]
-         (when-let [event (:event match)]
+       (let [{:keys [match]} db
+             {:keys [event fragment]} match]
+         (when event
            (if (and (= gevents/EventType.POPSTATE (.-type event))
                     (.-state event))
-             {:fx [[::scroll {:x (.-scrollX (.-state event))
-                              :y (.-scrollY (.-state event))}]]}
-             {:fx [[::scroll {:x 0 :y 0}]]}))))))
+             {:fx [[::scroll-to {:x (.-scrollX (.-state event))
+                                 :y (.-scrollY (.-state event))}]]}
+             (if fragment
+               {:fx [[::scroll-into-view fragment]]}
+               {:fx [[::scroll-to {:x 0 :y 0}]]})))))))
