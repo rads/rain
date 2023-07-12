@@ -77,6 +77,30 @@
 #?(:cljs (rf/reg-sub ::match (fn [{:keys [match]}] match)))
 
 #?(:cljs
+   (def scroll-buffer (reagent.core/atom {})))
+
+#?(:cljs
+   (defn- use-scroll-restoration [match]
+     (let [{:keys [template]} match]
+       (useEffect
+         (fn []
+           (when-let [[type opts] (get @scroll-buffer template)]
+             (swap! scroll-buffer dissoc template)
+             (case type
+               ::scroll-to (js/window.scrollTo (-> opts :position :x)
+                                               (-> opts :position :y))
+               ::scroll-into-view (-> (js/document.getElementById (:fragment opts))
+                                      (.scrollIntoView))))
+           js/undefined)
+         #js[@scroll-buffer template]))))
+
+#?(:cljs
+   (defn- current-page* [match]
+     (let [page (-> match :data :get)]
+       (use-scroll-restoration match)
+       [page (:props @bootstrap-data)])))
+
+#?(:cljs
    (defn current-page
      "A Reagent component to render the current page.
 
@@ -98,8 +122,7 @@
      client-side hydration."
      [_]
      (when-let [match @(rf/subscribe [::match])]
-       (let [page (-> match :data :get)]
-         [page match]))))
+       [:f> current-page* match])))
 
 #?(:clj
    (def ^:private subscriptions (clojure.core/atom {})))
@@ -271,51 +294,55 @@
        reitit/match->path)))
 
 #?(:cljs
-   (defn add-scroll-listener! [router-atom]
-     (js/document.addEventListener
-       "scroll"
-       (debounce (fn [_]
-                   (.replaceState js/window.history
-                                  #js{:scrollX js/window.scrollX
-                                      :scrollY js/window.scrollY}
-                                  ""
-                                  (rfh/-get-path @router-atom)))
-                 100)
-       true)))
+   (def last-match (atom nil)))
+
+#?(:cljs
+   (defn- get-scroll-position [{:keys [template] :as _match}]
+     (let [k (str "__rain_scroll_" template)]
+       (try
+         (js->clj (js/JSON.parse (js/sessionStorage.getItem k))
+                  :keywordize-keys true)
+         (catch js/Error _
+           nil)))))
 
 #?(:cljs
    (rf/reg-fx
      ::scroll-to
-     (fn [{:keys [x y]}]
-       (.scrollTo js/window x y))))
+     (fn [{:keys [template] :as opts}]
+       (swap! scroll-buffer assoc template [::scroll-to opts]))))
 
 #?(:cljs
    (rf/reg-fx
      ::scroll-into-view
-     (fn [fragment]
-       (js/setTimeout
-         (fn []
-           (.scrollIntoView (js/document.getElementById fragment)))
-         1))))
+     (fn [{:keys [template] :as opts}]
+       (swap! scroll-buffer assoc template [::scroll-into-view opts]))))
 
 #?(:cljs
-   (rf/reg-event-fx
-     ::restore-scroll-position
-     (fn [{:keys [db]} _]
-       (let [{:keys [match]} db
-             {:keys [event fragment]} match]
-         (println match event fragment)
-         (when event
-           (if (and (= gevents/EventType.POPSTATE (.-type event))
-                    (.-state event))
-             (do
-               (println "scroll-to state")
-               {:fx [[::scroll-to {:x (.-scrollX (.-state event))
-                                   :y (.-scrollY (.-state event))}]]})
-             (if fragment
-               (do
-                 (println "scroll into view")
-                 {:fx [[::scroll-into-view fragment]]})
-               (do
-                 (println "scroll-to top")
-                 {:fx [[::scroll-to {:x 0 :y 0}]]}))))))))
+   (defn- restore-scroll-position [{:keys [db]} _]
+     (let [{:keys [match first-load]} db
+           {:keys [fragment template]} match
+           event-type (some-> match :event .-type)]
+       (when-not first-load
+         (doto {:fx (if (and fragment (not (= event-type gevents/EventType.POPSTATE)))
+                      [[::scroll-into-view {:template template
+                                            :fragment fragment}]]
+                      (if (= event-type gevents/EventType.POPSTATE)
+                        [[::scroll-to {:template template
+                                       :position (or (get-scroll-position match)
+                                                     {:x 0 :y 0})}]]
+                        [[::scroll-to {:template template
+                                       :position {:x 0 :y 0}}]]))}
+           prn)))))
+
+#?(:cljs
+   (rf/reg-event-fx ::restore-scroll-position restore-scroll-position))
+
+#?(:cljs
+   (defn save-scroll-position! [match]
+     (when-let [{:keys [template]} @last-match]
+       (when (not= template (:template match))
+         (let [k (str "__rain_scroll_" template)
+               v (js/JSON.stringify #js{:x js/window.scrollX
+                                        :y js/window.scrollY})]
+           (js/sessionStorage.setItem k v))))
+     (reset! last-match match)))
