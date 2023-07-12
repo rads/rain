@@ -323,16 +323,15 @@
            {:keys [fragment template]} match
            event-type (some-> match :event .-type)]
        (when-not first-load
-         (doto {:fx (if (and fragment (not (= event-type gevents/EventType.POPSTATE)))
-                      [[::scroll-into-view {:template template
-                                            :fragment fragment}]]
-                      (if (= event-type gevents/EventType.POPSTATE)
-                        [[::scroll-to {:template template
-                                       :position (or (get-scroll-position match)
-                                                     {:x 0 :y 0})}]]
-                        [[::scroll-to {:template template
-                                       :position {:x 0 :y 0}}]]))}
-           prn)))))
+         {:fx (if (and fragment (not (= event-type gevents/EventType.POPSTATE)))
+                [[::scroll-into-view {:template template
+                                      :fragment fragment}]]
+                (if (= event-type gevents/EventType.POPSTATE)
+                  [[::scroll-to {:template template
+                                 :position (or (get-scroll-position match)
+                                               {:x 0 :y 0})}]]
+                  [[::scroll-to {:template template
+                                 :position {:x 0 :y 0}}]]))}))))
 
 #?(:cljs
    (rf/reg-event-fx ::restore-scroll-position restore-scroll-position))
