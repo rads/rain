@@ -342,7 +342,7 @@
      (when-let [{:keys [template]} @last-match]
        (when (not= template (:template match))
          (let [k (str "__rain_scroll_" template)
-               v (js/JSON.stringify #js{:x js/window.scrollX
-                                        :y js/window.scrollY})]
+               v (js/JSON.stringify #js{:x js/window.pageXOffset
+                                        :y js/window.pageYOffset})]
            (js/sessionStorage.setItem k v))))
      (reset! last-match match)))
