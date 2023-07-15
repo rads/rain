@@ -299,9 +299,6 @@
        reitit/match->path)))
 
 #?(:cljs
-   (def last-match (atom nil)))
-
-#?(:cljs
    (defn- get-scroll-position [{:keys [template] :as _match}]
      (let [k (str "__rain_scroll_" template)]
        (try
@@ -327,26 +324,22 @@
      (let [{:keys [match first-load]} db
            {:keys [fragment template]} match
            event-type (some-> match :event .-type)]
-       (when-not first-load
-         {:fx (if (and fragment (not (= event-type gevents/EventType.POPSTATE)))
-                [[::scroll-into-view {:template template
-                                      :fragment fragment}]]
-                (if (= event-type gevents/EventType.POPSTATE)
-                  [[::scroll-to {:template template
-                                 :position (or (get-scroll-position match)
-                                               {:x 0 :y 0})}]]
-                  [[::scroll-to {:template template
-                                 :position {:x 0 :y 0}}]]))}))))
+       {:fx (if (and fragment (not (= event-type gevents/EventType.POPSTATE)))
+              [[::scroll-into-view {:template template
+                                    :fragment fragment}]]
+              (if (or first-load (= event-type gevents/EventType.POPSTATE))
+                [[::scroll-to {:template template
+                               :position (or (get-scroll-position match)
+                                             {:x 0 :y 0})}]]
+                [[::scroll-to {:template template
+                               :position {:x 0 :y 0}}]]))})))
 
 #?(:cljs
    (rf/reg-event-fx ::restore-scroll-position restore-scroll-position))
 
 #?(:cljs
-   (defn save-scroll-position! [match]
-     (when-let [{:keys [template]} @last-match]
-       (when (not= template (:template match))
-         (let [k (str "__rain_scroll_" template)
-               v (js/JSON.stringify #js{:x js/window.pageXOffset
-                                        :y js/window.pageYOffset})]
-           (js/sessionStorage.setItem k v))))
-     (reset! last-match match)))
+   (defn save-scroll-position! [{:keys [template] :as _match}]
+     (let [k (str "__rain_scroll_" template)
+           v (js/JSON.stringify #js{:x js/window.pageXOffset
+                                    :y js/window.pageYOffset})]
+       (js/sessionStorage.setItem k v))))
