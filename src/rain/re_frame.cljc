@@ -84,6 +84,11 @@
      (let [{:keys [template]} match]
        (useEffect
          (fn []
+           (set! js/window.history.scrollRestoration "manual")
+           js/undefined)
+         #js[])
+       (useEffect
+         (fn []
            (when-let [[type opts] (get @scroll-buffer template)]
              (swap! scroll-buffer dissoc template)
              (case type
